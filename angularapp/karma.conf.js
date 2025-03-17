@@ -10,22 +10,32 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
+      require('karma-spec-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false // leave Jasmine Spec Runner output visible
     },
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, './coverage/angularapp'),
       reports: ['html', 'lcovonly', 'text-summary'],
       fixWebpackSourcePaths: true
     },
-    reporters: ['progress', 'kjhtml'],
-    port: 9876,
-    colors: true,
+    reporters: ['spec'], 
+    specReporter: {
+      suppressSkipped: false,
+      suppressPassed: false,
+      showSpecTiming: false, // ✅ Remove timing from success/failure messages
+      prefixes: {
+        success: "SUCCESS-",  // ✅ Only "SUCCESS-" will appear
+        failure: "FAILED-",   // ✅ Only "FAILED-" will appear
+        skipped: "SKIPPED-"
+      }
+    },
+    colors: false, // ✅ Disables ANSI colors
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['ChromeHeadlessNoSandbox'], // Use the custom headless mode
+    browsers: ['ChromeHeadlessNoSandbox'],
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: 'ChromeHeadless',
@@ -37,7 +47,8 @@ module.exports = function (config) {
         ],
       },
     },
-    singleRun: false,
+    singleRun: true,
+    autoWatch: false,
     restartOnFileChange: true
   });
 };
